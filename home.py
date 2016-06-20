@@ -20,12 +20,12 @@ def Main():
                 data = cur.fetchall()
 
                 for row in data:
-                        print row
+                        print (row)
 
-        except sqlite3.Error, e:
+        except sqlite3.Error:
                 if con:
                         con.rollback()
-                        print "There was a problem with the SQL"
+                        print ("There was a problem with the SQL")
         finally:
                 if con:
                         con.close()
@@ -33,4 +33,4 @@ if __name__ == '__main__':
 	Main()
 db_ip = ""
 if len(db_ip) < 8 or len(db_ip) > 15:
-	print "The IP adress is invalid"
+	print ("The IP adress is invalid")
