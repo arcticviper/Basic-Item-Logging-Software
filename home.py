@@ -3,19 +3,22 @@
 # Created by Charles Denison
 # Setup
 import sqlite3
+def Setup():
+        cur.excute("INSERT INTO users VALUES()
+        con.commit()
 
 def Main():
 
         try:
                 con = sqlite3.connect('test.db')
                 cur = con.cursor()
-                cur.execute('CREATE TABLE Pets(Id INT, Name TEXT, Price INT)')
-                cur.execute("INSERT INTO Pets VALUES(1, 'Cat', 400)")
-                cur.execute("INSERT INTO Pets VALUES(2, 'Cog', 600)")
+                cur.execute('CREATE TABLE users(User TEXT, Pass INT)')
+#                cur.execute("INSERT INTO Pets VALUES(1, 'Cat', 400)")
+#                cur.execute("INSERT INTO Pets VALUES(2, 'Cog', 600)")
 
                 con.commit()
                 
-                cur.execute("SELECT * FROM Pets")
+                cur.execute("SELECT * FROM Users")
                 
                 data = cur.fetchall()
 
