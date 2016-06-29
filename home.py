@@ -2,35 +2,24 @@
 # Version 0.1
 # Created by Charles Denison
 # Setup
-import sqlite3
+from MySQLdb import *
 
-def Main():
+# Open database connection
+db = MySQLdb.connect("localhost","testuser","test123","TESTDB" )
 
-        try:
-                con = sqlite3.connect('test.db')
-                cur = con.cursor()
-                cur.execute('CREATE TABLE Pets(Id INT, Name TEXT, Price INT)')
-                cur.execute("INSERT INTO Pets VALUES(1, 'Cat', 400)")
-                cur.execute("INSERT INTO Pets VALUES(2, 'Cog', 600)")
+# prepare a cursor object using cursor() method
+cursor = db.cursor()
 
-                con.commit()
-                
-                cur.execute("SELECT * FROM Pets")
-                
-                data = cur.fetchall()
+# execute SQL query using execute() method.
+cursor.execute("SELECT VERSION()")
 
-                for row in data:
-                        print row
+# Fetch a single row using fetchone() method.
+data = cursor.fetchone()
 
-        except sqlite3.Error, e:
-                if con:
-                        con.rollback()
-                        print "There was a problem with the SQL"
-        finally:
-                if con:
-                        con.close()
-if __name__ == '__main__':
-	Main()
+print ("Database version : %s " % data)
+
+# disconnect from server
+db.close()
 db_ip = ""
 if len(db_ip) < 8 or len(db_ip) > 15:
-	print "The IP adress is invalid"
+	print ("The IP adress is invalid")
