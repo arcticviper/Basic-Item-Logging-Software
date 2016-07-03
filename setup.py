@@ -13,17 +13,18 @@ def Main():
                 c = conn.cursor()
 
 #table setup for login and items
-                #create login table email+password
-                c.execute('CREATE TABLE IF NOT EXISTS users(ID KEY, Email TEXT,password TEXT)')
+                #create login table email+password, priv stands for privleges
+                c.execute('CREATE TABLE IF NOT EXISTS users(ID KEY, Email TEXT,password TEXT,priv BOOL,unattempt INT)')
                 #create item table of ID, ItemName, Category, Quanitty, notes, value, total)
-                c.execute('CREATE TABLE IF NOT EXISTS items(serial KEY, ItemName TEXT, Category TEXT, Quantity INT, Notes TEXT, Borrower TEXT)')
+                c.execute('CREATE TABLE IF NOT EXISTS items(serial KEY, ItemName TEXT, Category TEXT, Quantity INT, Notes TEXT, Borrower TEXT,Booker TEXT)')
                 #create user log time table
-                c.execute('CREATE TABLE IF NOT EXISTS userlog(ID KEY, Email TEXT,password TEXT)')
+                c.execute('CREATE TABLE IF NOT EXISTS userlog(Attempt KEY, Email TEXT,datestamp TEXT,sucessful BOOL)')
                 #create item log time table
-                c.execute('CREATE TABLE IF NOT EXISTS itemlog(ID KEY, Email TEXT,password TEXT)')
-# inserting test data, add # when done testing
-                c.execute("INSERT INTO users VALUES(2, 'name@albertparkcollege.vic.edu.au', 'APC00000')")
-
+                c.execute('CREATE TABLE IF NOT EXISTS itemlog(ID KEY, Email TEXT,datestamp TEXT,ItemName TEXT,serial KEY)')
+# inserting test data, add # to start when done testing
+                c.execute("INSERT INTO users VALUES(123, 'admin@albertparkcollege.vic.edu.au', 'APc00000',1,0)")
+                c.execute("INSERT INTO users VALUES(456, 'user@albertparkcollege.vic.edu.au','APc00000',0,0)")
+                
 # grabbing and checking data
                 c.execute("SELECT * FROM users")
                
