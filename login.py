@@ -18,13 +18,16 @@ passwordio = getpass.getpass(prompt='Password: ', stream=None)
 #read from users table and ensures that user and password matches with information on database
 #when using different tables ensure that Email  and password matches the table selected (users) and only selecting users who have under 3 incorrect attempts
 c.execute('SELECT * from users WHERE Email="%s" AND password="%s" AND unattempt<3' % (user, passwordio))
+Mydata = c.execute('SELECT TextString from ControlTable WHERE Group = "Messages" and GroupNum = 1)')
 if c.fetchone() is not None:
     print ("Welcome")
     c.execute("INSERT INTO userlog(Attempt, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,True))
+    c.execute('UPDATE users SET unattempt = 0 WHERE Email= ?',(user,))
     conn.commit()
 else:
     attempt=attempt+1
-    print ("Login failed, please ensure you have typed your details correctly.")
+    print ("Login failed, please ensure you have typed your details correctly. Otherwise please contact the system adminstrator")
     c.execute("INSERT INTO userlog(Attempt, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,False))
     c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
+    print (Mydata)
     conn.commit()
