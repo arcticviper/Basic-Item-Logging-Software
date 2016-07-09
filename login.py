@@ -23,13 +23,20 @@ class Login(Frame): #create loginframe
         self.entryusr = Entry(self)
         self.entrypw = Entry(self, show="*")
 
-        self.labelusr.grid(row=0, sticky=E)
-        self.labelpw.grid(row=1, sticky=E)
-        self.entryusr.grid(row=0, column=1)
-        self.entrypw.grid(row=1, column=1)
-        self.logbtn = Button(self, text="Login", command = self._login_btn_clickked)
-        self.logbtn.grid(columnspan=2)
-        self.pack() #pack grid
+        #logo = PhotoImage(file="APC-logo.png")
+        #w1 = Label(root, image=logo).grid(row=0,column=0)
+
+        #grid sorting
+        self.labelusr.grid(row=1, sticky=E)
+        self.labelpw.grid(row=2, sticky=E)
+        self.entryusr.grid(row=1, column=1)
+        self.entrypw.grid(row=2, column=1)
+        self.logbtn = Button(self, text="Login", command = self._login_btn_clickked,bg="#B3B3B3")
+        self.logbtn.grid(row=1, column=2, rowspan=2)
+        self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3")
+        self.logout.grid(columnspan=2)
+        self.pack()
+        #pack grid
     def _login_btn_clickked(self):
         user = self.entryusr.get()
         password = self.entrypw.get()
@@ -50,5 +57,6 @@ class Login(Frame): #create loginframe
             c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
             conn.commit()
 root = Tk()
+root.configure(bg="#707070")
 lf = Login(root)
 root.mainloop()
