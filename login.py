@@ -8,6 +8,7 @@ import sqlite3
 import getpass
 import time
 import datetime
+import runpy
 conn = sqlite3.connect('setup.db')
 c = conn.cursor()
 unix = time.time()
@@ -16,16 +17,15 @@ date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%M-%d %H:%M:%S'))
 class Login(Frame): #create loginframe
     def __init__(self, master):
         super().__init__(master)#inherit base class
+        self.grid()
+        self.create_widget()
+    def create_widget(self):
         #init labels
         self.labelusr = Label(self, text="Username")
         self.labelpw = Label(self, text="Password")
         #init entry
         self.entryusr = Entry(self)
         self.entrypw = Entry(self, show="*")
-
-        #logo = PhotoImage(file="APC-logo.png")
-        #w1 = Label(root, image=logo).grid(row=0,column=0)
-
         #grid sorting
         self.labelusr.grid(row=1, sticky=E)
         self.labelpw.grid(row=2, sticky=E)
@@ -35,7 +35,6 @@ class Login(Frame): #create loginframe
         self.logbtn.grid(row=1, column=2, rowspan=2)
         self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3")
         self.logout.grid(columnspan=2)
-        self.pack()
         #pack grid
     def _login_btn_clickked(self):
         user = self.entryusr.get()
@@ -50,6 +49,11 @@ class Login(Frame): #create loginframe
             c.execute("INSERT INTO userlog(Attempt, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,True))
             c.execute('UPDATE users SET unattempt = 0 WHERE Email= ?',(user,))
             conn.commit()
+            if c.execute('SELECT * from users WHERE Email="%s" AND priv=1' % (user)):
+                runpy.run_path('adminpanel.py')
+            else:
+                runpy.run_path('userpanel.py')
+                         
         else:
             attempt=attempt+1
             tm.showerror("Login error", "Login failed, please ensure you have typed your details correctly. Otherwise please contact the system adminstrator")
@@ -58,5 +62,7 @@ class Login(Frame): #create loginframe
             conn.commit()
 root = Tk()
 root.configure(bg="#707070")
+logo = PhotoImage(file="APC-logo.png")
+w1 = Label(root, image=logo).grid(row=0,column=0)
 lf = Login(root)
 root.mainloop()

@@ -5,6 +5,7 @@
 from tkinter import *
 import tkinter
 import os
+import runpy
 
 
 class Application(Frame):
@@ -14,12 +15,6 @@ class Application(Frame):
         self.create_widget()
         
     def create_widget(self,):
-        import tkinter as tk
-        root1 = tk.Tk()
-        def kill1():
-            root1.destroy()
-            from py2 import func2
-            func2()
         self.bttn1 = Button(root,text="Item Add",width=80,bg="#B3B3B3")
         #self.bttn1["command"] = #open item add
         self.bttn1.grid(row=1,column=0)
@@ -33,7 +28,7 @@ class Application(Frame):
         #self.bttn4["command"] = #open User Modify
         self.bttn4.grid(row=4,column=0)
         self.bttn5 = Button(root,text="User Panel",width=80,bg="#B3B3B3")
-        self.bttn5["command"] = kill1
+        #self.bttn5["command"] = runpy.run_path('userpanel.py')
         self.bttn5.grid(row=5,column=0)
         self.bttn6 = Button(root,text="User Logging",width=80,bg="#B3B3B3")
         #self.bttn6["command"] = #open User Logging
