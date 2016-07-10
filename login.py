@@ -4,8 +4,8 @@
 # LOGIN
 from tkinter import *
 import tkinter.messagebox as tm
+import tkinter as tk
 import sqlite3
-import getpass
 import time
 import datetime
 import runpy
@@ -60,9 +60,9 @@ class Login(Frame): #create loginframe
             c.execute("INSERT INTO userlog(Attempt, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,False))
             c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
             conn.commit()
-root = Tk()
+root = tk.Toplevel()
 root.configure(bg="#707070")
-logo = PhotoImage(file="APC-logo.png")
+logo = PhotoImage(master = root,file="APC-logo.png")
 w1 = Label(root, image=logo).grid(row=0,column=0)
 lf = Login(root)
 root.mainloop()

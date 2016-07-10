@@ -22,12 +22,16 @@ class Application(Frame):
         self.bttn2.grid(row=2,column=0)
         with open("login.py") as f:
             code = compile(f.read(), "login.py", 'exec')
-        self.bttn3 = Button(root,text="Logout",width=80,bg="#B3B3B3")
-        self.bttn3["command"] = exec(code)
+        self.bttn3 = Button(root,text="Reserve",width=80,bg="#B3B3B3")
+        #self.bttn3["command"] = exec(code)
         self.bttn3.grid(row=3,column=0)
-        self.bttn4 = Button(root,text="Quit",width=80,bg="#B3B3B3")
-        self.bttn4["command"] = quit
+        self.bttn4 = Button(root,text="Logout",width=80,bg="#B3B3B3")
+        #self.bttn4["command"] = exec(code)
         self.bttn4.grid(row=4,column=0)
+        self.bttn5 = Button(root,text="Quit",width=80,bg="#B3B3B3")
+        self.bttn5["command"] = quit
+        self.bttn5.grid(row=5,column=0)
+
 
 root = Tk()
 root.configure(bg="#4D4D4D")
