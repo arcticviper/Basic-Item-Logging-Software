@@ -13,6 +13,9 @@ c = conn.cursor()
 unix = time.time()
 date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%M-%d %H:%M:%S'))
 id
+def userpanel():
+        root.destroy()
+        runpy.run_path('userpanel.py')
 def exit():
     conn.close()
     root.destroy()
@@ -43,7 +46,7 @@ class Return(Frame): #create loginframe
         self.logbtn.grid(row=1, column=2)
         self.logbtn = Button(self, text="Return", command = self._return_btn_clickked,bg="#B3B3B3")
         self.logbtn.grid(row=2, column=2)
-        self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3")
+        self.logout = Button(self, text="Exit", command = userpanel,bg="#B3B3B3")
         self.logout.grid(row=3, column=2)
         #pack grid
     def _search_btn_clickked(self):
@@ -78,6 +81,7 @@ class Return(Frame): #create loginframe
             tm.showerror("Return error", "Return failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator")
             conn.commit()
 root = Tk()
+root.wm_title("User Retrun")
 root.configure(bg="#707070")
 logo = PhotoImage(master = root,file="APC-logo.gif")
 w1 = Label(root, image=logo).grid(row=0,column=0)

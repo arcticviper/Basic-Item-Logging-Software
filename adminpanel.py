@@ -50,9 +50,9 @@ class Application(Frame):
         self.bttn9.grid(row=9,column=0)
 
 root = Tk()
+root.wm_title("Admin Panel")
 root.configure(bg="#4D4D4D")
 logo = PhotoImage(master = root,file="APC-logo.gif")
 w1 = Label(root, image=logo).grid(row=0,column=0)
-
 app = Application(root)
 root.mainloop

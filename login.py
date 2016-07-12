@@ -69,6 +69,7 @@ class Login(Frame): #create loginframe
             c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
             conn.commit()
 root = Tk()
+root.wm_title("Login")
 root.configure(bg="#707070")
 #doesn't work on mac or python 3.5.1
 logo = PhotoImage(master = root,file="APC-logo.gif")
