@@ -13,6 +13,10 @@ c = conn.cursor()
 unix = time.time()
 date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%M-%d %H:%M:%S'))
 id
+def exit():
+    conn.close()
+    root.destroy()
+    runpy.run_path('userpanel.py')
 #user input
 class Return(Frame): #create loginframe
     def __init__(self, master):
@@ -46,16 +50,16 @@ class Return(Frame): #create loginframe
         serialno = self.entryserial.get()
         barcodeno = self.entrybarcode.get()
         search = c.execute('SELECT ItemName FROM items WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
-        #self.entryitemname = Label(self, textvariable=c.fetchone())
         self.entryitemname.delete(0, 'end')
         self.entryitemname.insert(END, c.fetchone())
         print (c.fetchone())
         if c.fetchone() is not None:
-            #tm.showinfo("Return info", "Thank you for returning this item")
-            #c.execute("INSERT INTO itemlog(IDno, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,True))
+            tm.showinfo("Return info", "Thank you for returning this item")
+            c.execute("INSERT INTO itemlog(IDno, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,True))
             conn.commit()
         else:
             tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator")
+            print (c.fetchone())
             conn.commit()
         #print (c.fetchone())
         #print(c.execute('SELECT * from items WHERE serial="%s" AND barcode="%s"' % (serial, barcode)))
@@ -75,7 +79,7 @@ class Return(Frame): #create loginframe
             conn.commit()
 root = Tk()
 root.configure(bg="#707070")
-logo = PhotoImage(master = root,file="APC-logo.png")
+logo = PhotoImage(master = root,file="APC-logo.gif")
 w1 = Label(root, image=logo).grid(row=0,column=0)
 lf = Return(root)
 root.mainloop()

@@ -7,6 +7,12 @@ import tkinter
 import os
 import runpy
 
+def logout():
+        root.destroy()
+        runpy.run_path('login.py')
+def userpanel():
+        root.destroy()
+        runpy.run_path('userpanel.py')
 
 class Application(Frame):
     def __init__(self,master):
@@ -28,7 +34,7 @@ class Application(Frame):
         #self.bttn4["command"] = #open User Modify
         self.bttn4.grid(row=4,column=0)
         self.bttn5 = Button(root,text="User Panel",width=80,bg="#B3B3B3")
-        #self.bttn5["command"] = runpy.run_path('userpanel.py')
+        self.bttn5["command"] = userpanel
         self.bttn5.grid(row=5,column=0)
         self.bttn6 = Button(root,text="User Logging",width=80,bg="#B3B3B3")
         #self.bttn6["command"] = #open User Logging
@@ -37,7 +43,7 @@ class Application(Frame):
         #self.bttn7["command"] = #open item logging
         self.bttn7.grid(row=7,column=0)
         self.bttn8 = Button(root,text="Logout",width=80,bg="#B3B3B3")
-        self.bttn8["command"] = runpy.run_path('login.py')
+        self.bttn8["command"] = logout
         self.bttn8.grid(row=8,column=0)
         self.bttn9 = Button(root,text="Quit",width=80,bg="#B3B3B3")
         self.bttn9["command"] = quit
@@ -45,8 +51,8 @@ class Application(Frame):
 
 root = Tk()
 root.configure(bg="#4D4D4D")
-logo = PhotoImage(master = root,file="APC-logo.png")
+logo = PhotoImage(master = root,file="APC-logo.gif")
 w1 = Label(root, image=logo).grid(row=0,column=0)
-#root.geometry("100x250") not required
+
 app = Application(root)
 root.mainloop

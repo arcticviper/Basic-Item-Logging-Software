@@ -14,6 +14,14 @@ c = conn.cursor()
 unix = time.time()
 date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%M-%d %H:%M:%S'))
 #user input
+def admin():
+    conn.close()
+    root.destroy()
+    runpy.run_path('adminpanel.py')
+def userpanel():
+    conn.close()
+    root.destroy()
+    runpy.run_path('userpanel.py')
 class Login(Frame): #create loginframe
     def __init__(self, master):
         super().__init__(master)#inherit base class
@@ -49,20 +57,21 @@ class Login(Frame): #create loginframe
             c.execute("INSERT INTO userlog(Attempt, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,True))
             c.execute('UPDATE users SET unattempt = 0 WHERE Email= ?',(user,))
             conn.commit()
-            if c.execute('SELECT * from users WHERE Email="%s" AND priv=1' % (user)):
-                runpy.run_path('adminpanel.py')
+            c.execute('SELECT * from users WHERE Email="%s" AND priv=1' % (user))
+            if c.fetchone() is not None:
+                admin()
             else:
-                runpy.run_path('userpanel.py')
-                         
+                userpanel()
         else:
             attempt=attempt+1
             tm.showerror("Login error", "Login failed, please ensure you have typed your details correctly. Otherwise please contact the system adminstrator")
             c.execute("INSERT INTO userlog(Attempt, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,False))
             c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
             conn.commit()
-root = tk.Toplevel()
+root = Tk()
 root.configure(bg="#707070")
-logo = PhotoImage(master = root,file="APC-logo.png")
+#doesn't work on mac or python 3.5.1
+logo = PhotoImage(master = root,file="APC-logo.gif")
 w1 = Label(root, image=logo).grid(row=0,column=0)
 lf = Login(root)
 root.mainloop()
