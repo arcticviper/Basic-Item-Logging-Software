@@ -21,7 +21,7 @@ def exit():
     root.destroy()
     runpy.run_path('userpanel.py')
 #user input
-class Return(Frame): #create loginframe
+class Return(Frame): #create searchframe
     def __init__(self, master):
         super().__init__(master)#inherit base class
         self.grid()
@@ -54,18 +54,15 @@ class Return(Frame): #create loginframe
         barcodeno = self.entrybarcode.get()
         search = c.execute('SELECT ItemName FROM items WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
         self.entryitemname.delete(0, 'end')
-        self.entryitemname.insert(END, c.fetchone())
-        print (c.fetchone())
-        if c.fetchone() is not None:
-            tm.showinfo("Return info", "Thank you for returning this item")
-            c.execute("INSERT INTO itemlog(IDno, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,True))
+        result=c.fetchone()
+        #c.fetchone()
+        if result is not None:
+            tm.showinfo("Search Found", "This item has been found in the database.")
+            self.entryitemname.insert(END, result)
             conn.commit()
         else:
-            tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator")
-            print (c.fetchone())
+            tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
             conn.commit()
-        #print (c.fetchone())
-        #print(c.execute('SELECT * from items WHERE serial="%s" AND barcode="%s"' % (serial, barcode)))
     def _return_btn_clickked(self):
         serial = self.entryserial.get()
         barcode = self.entrybarcode.get()
@@ -73,13 +70,16 @@ class Return(Frame): #create loginframe
         #read from users table and ensures that user and password matches with information on database
         #when using different tables ensure that Email  and password matches the table selected (users) and only selecting users who have under 3 incorrect attempts
         c.execute('SELECT * from users WHERE Email="%s" AND password="%s" AND unattempt<3' % (user, password))
-        if c.fetchone() is not None:
-            tm.showinfo("Return info", "Thank you for returning this item")
-            c.execute("INSERT INTO itemlog(IDno, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,True))
-            conn.commit()
-        else:
-            tm.showerror("Return error", "Return failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator")
-            conn.commit()
+        try:
+                if c.fetchone() == None:
+                        tm.showinfo("Return info", "Thank you for returning this item")
+                        #c.execute("INSERT INTO itemlog(ID, Email, datestamp,ItemName,serial)VALUES(?,?,?,?,?)",(,,,,))            conn.commit()
+                        conn.commit()
+                else:
+                        tm.showerror("Return error", "Return failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator")
+                        conn.commit()
+        except:
+                print ("Error has occured")
 root = Tk()
 root.wm_title("User Retrun")
 root.configure(bg="#707070")
