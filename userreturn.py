@@ -11,7 +11,7 @@ import runpy
 conn = sqlite3.connect('setup.db')
 c = conn.cursor()
 unix = time.time()
-date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%M-%d %H:%M:%S'))
+date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
 id
 def userpanel():
         root.destroy()
@@ -21,7 +21,7 @@ def exit():
     root.destroy()
     runpy.run_path('userpanel.py')
 #user input
-class Return(Frame): #create searchframe
+class Return(Frame): #create returnframe
     def __init__(self, master):
         super().__init__(master)#inherit base class
         self.grid()
@@ -55,31 +55,34 @@ class Return(Frame): #create searchframe
         search = c.execute('SELECT ItemName FROM items WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
         self.entryitemname.delete(0, 'end')
         result=c.fetchone()
-        #c.fetchone()
         if result is not None:
-            tm.showinfo("Search Found", "This item has been found in the database.")
-            self.entryitemname.insert(END, result)
-            conn.commit()
+                self.entryitemname.insert(END, result)
+                tm.showinfo("Search Found", "This item has been found in the database.")
+                conn.commit()
         else:
-            tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
-            conn.commit()
+                tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
+                conn.commit()
     def _return_btn_clickked(self):
-        serial = self.entryserial.get()
-        barcode = self.entrybarcode.get()
-        #Item = 
-        #read from users table and ensures that user and password matches with information on database
-        #when using different tables ensure that Email  and password matches the table selected (users) and only selecting users who have under 3 incorrect attempts
-        c.execute('SELECT * from users WHERE Email="%s" AND password="%s" AND unattempt<3' % (user, password))
-        try:
-                if c.fetchone() == None:
-                        tm.showinfo("Return info", "Thank you for returning this item")
-                        #c.execute("INSERT INTO itemlog(ID, Email, datestamp,ItemName,serial)VALUES(?,?,?,?,?)",(,,,,))            conn.commit()
-                        conn.commit()
-                else:
-                        tm.showerror("Return error", "Return failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator")
-                        conn.commit()
-        except:
-                print ("Error has occured")
+        c.execute('SELECT Email FROM userlog ORDER BY Email DESC LIMIT 1')
+        Email = c.fetchone()
+        print (Email)
+        #potentially fix to allow for multiple logins as this only allows for one login at a time.
+        serialno = self.entryserial.get()
+        barcodeno = self.entrybarcode.get()
+        search = c.execute('SELECT ItemName FROM items WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
+        self.entryitemname.delete(0, 'end')
+        result=c.fetchone()
+        print (result)
+        #grabid = c.execute('SELECT id FROM items WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
+        if result is not None:
+                tm.showinfo("Return complete", "Thank you for returning this item.")
+                self.entryitemname.insert(END, result)
+                c.execute("INSERT INTO itemlog(Email, datestamp, ItemName, serial,borrowing) VALUES(?,?,?,?,?)",(str(Email),date,str(result),serialno,False))
+                c.execute('UPDATE items SET Borrower = NULL WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
+                conn.commit()
+        else:
+                tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
+                conn.commit()
 root = Tk()
 root.wm_title("User Retrun")
 root.configure(bg="#707070")

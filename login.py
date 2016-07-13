@@ -12,7 +12,7 @@ import runpy
 conn = sqlite3.connect('setup.db')
 c = conn.cursor()
 unix = time.time()
-date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%M-%d %H:%M:%S'))
+date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
 #user input
 def admin():
     conn.close()
@@ -39,9 +39,9 @@ class Login(Frame): #create loginframe
         self.labelpw.grid(row=2, sticky=E)
         self.entryusr.grid(row=1, column=1)
         self.entrypw.grid(row=2, column=1)
-        self.logbtn = Button(self, text="Login", command = self._login_btn_clickked,bg="#B3B3B3")
+        self.logbtn = Button(self, text="Login", command = self._login_btn_clickked,bg="#B3B3B3",fg='green')
         self.logbtn.grid(row=1, column=2, rowspan=2)
-        self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3")
+        self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3",fg='red')
         self.logout.grid(columnspan=2)
         #pack grid
     def _login_btn_clickked(self):
@@ -65,7 +65,7 @@ class Login(Frame): #create loginframe
         else:
             attempt=attempt+1
             tm.showerror("Login error", "Login failed, please ensure you have typed your details correctly. Otherwise please contact the system adminstrator")
-            c.execute("INSERT INTO userlog(Attempt, Email, datestamp,sucessful)VALUES(?,?,?,?)",(attempt,user,date,False))
+            c.execute("INSERT INTO userlog(Attempt, Email, datestamp, sucessful)VALUES(?,?,?,?)",(attempt,user,date,False))
             c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
             conn.commit()
 root = Tk()

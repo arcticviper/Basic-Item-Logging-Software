@@ -20,12 +20,12 @@ def Main():
                 #create user log time table
                 c.execute('CREATE TABLE IF NOT EXISTS userlog(Attempt KEY, Email TEXT,datestamp TEXT,sucessful BOOL)')
                 #create item log time table
-                c.execute('CREATE TABLE IF NOT EXISTS itemlog(ID KEY, Email TEXT,datestamp TEXT,ItemName TEXT,serial KEY)')
+                c.execute('CREATE TABLE IF NOT EXISTS itemlog(id INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT,datestamp TEXT,ItemName TEXT,serial TEXT,borrowing BOOL)')
 # inserting test data, add # to start when done testing
                 c.execute("INSERT INTO users VALUES(123, 'admin@albertparkcollege.vic.edu.au', 'APc00000',1,0)")
                 c.execute("INSERT INTO users VALUES(456, 'user@albertparkcollege.vic.edu.au','APc00000',0,0)")
                 c.execute("INSERT INTO items VALUES(456,654, 'GoSlow','Camera',1,null,'admin@albertparkcollege.vic.edu.au',null)")
-                c.execute("INSERT INTO items VALUES(111,222, 'Rocket R1','Camera',1,null,null,'user@albertparkcollege.vic.edu.au')")
+                c.execute("INSERT INTO items VALUES(111,222, 'Canon 700E','Camera',1,null,null,'user@albertparkcollege.vic.edu.au')")
                 
 # grabbing and checking data
                 c.execute("SELECT * FROM users")
