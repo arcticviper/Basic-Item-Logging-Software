@@ -16,7 +16,7 @@ def Main():
                 #create login table email+password, priv stands for privleges
                 c.execute('CREATE TABLE IF NOT EXISTS users(ID KEY, Email TEXT,password TEXT,priv BOOL,unattempt INT)')
                 #create item table of ID, ItemName, Category, Quanitty, notes, value, total)
-                c.execute('CREATE TABLE IF NOT EXISTS items(serial KEY,barcode INT, ItemName TEXT, Category TEXT, Quantity INT, Notes TEXT, Borrower TEXT,Booker TEXT)')
+                c.execute('CREATE TABLE IF NOT EXISTS items(serial KEY,barcode INT, ItemName TEXT, Category TEXT, Quantity INT, Notes TEXT, Borrower TEXT, Booker TEXT)')
                 #create user log time table
                 c.execute('CREATE TABLE IF NOT EXISTS userlog(Attempt KEY, Email TEXT,datestamp TEXT,sucessful BOOL)')
                 #create item log time table

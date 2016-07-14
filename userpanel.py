@@ -15,10 +15,10 @@ def userreturn():
         runpy.run_path('userreturn.py')
 def withdraw():
         root.destroy()
-        runpy.run_path('withdraw.py')
+        runpy.run_path('userborrow.py')
 def reserve():
         root.destroy()
-        runpy.run_path('reserve.py')
+        runpy.run_path('userreserve.py')
 
 class Application(Frame):
     def __init__(self,master):
@@ -30,7 +30,7 @@ class Application(Frame):
         self.bttn1 = Button(root,text="Return Item",width=80,bg="#B3B3B3")
         self.bttn1["command"] = userreturn
         self.bttn1.grid(row=1,column=0)
-        self.bttn2 = Button(root,text="Withdraw",width=80,bg="#B3B3B3")
+        self.bttn2 = Button(root,text="Borrow Item",width=80,bg="#B3B3B3")
         self.bttn2["command"] = withdraw
         self.bttn2.grid(row=2,column=0)
         self.bttn3 = Button(root,text="Reserve",width=80,bg="#B3B3B3")
