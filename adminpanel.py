@@ -13,6 +13,9 @@ def logout():
 def userpanel():
         root.destroy()
         runpy.run_path('userpanel.py')
+def usermod():
+        root.destroy()
+        runpy.run_path('adminmoduser.py')
 
 class Application(Frame):
     def __init__(self,master):
@@ -31,7 +34,7 @@ class Application(Frame):
         #self.bttn3["command"] = #open User Add
         self.bttn3.grid(row=3,column=0)
         self.bttn4 = Button(root,text="User Modify",width=77,bg="#B3B3B3")
-        #self.bttn4["command"] = #open User Modify
+        self.bttn4["command"] = usermod
         self.bttn4.grid(row=4,column=0)
         self.bttn5 = Button(root,text="User Panel",width=77,bg="#B3B3B3")
         self.bttn5["command"] = userpanel
