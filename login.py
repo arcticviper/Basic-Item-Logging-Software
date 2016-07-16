@@ -29,8 +29,8 @@ class Login(Frame): #create loginframe
         self.create_widget()
     def create_widget(self):
         #init labels
-        self.labelusr = Label(self, text="Username")
-        self.labelpw = Label(self, text="Password")
+        self.labelusr = Label(self, text="Username",font=("Helvetica", 17))
+        self.labelpw = Label(self, text="Password",font=("Helvetica", 17))
         #init entry
         self.entryusr = Entry(self)
         self.entrypw = Entry(self, show="*")
@@ -39,9 +39,9 @@ class Login(Frame): #create loginframe
         self.labelpw.grid(row=2, sticky=E)
         self.entryusr.grid(row=1, column=1)
         self.entrypw.grid(row=2, column=1)
-        self.logbtn = Button(self, text="Login", command = self._login_btn_clickked,bg="#B3B3B3",fg='green')
+        self.logbtn = Button(self, text="Login", command = self._login_btn_clickked,bg="#B3B3B3",fg='green',font=("Helvetica", 16))
         self.logbtn.grid(row=1, column=2, rowspan=2)
-        self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3",fg='red')
+        self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3",fg='red',font=("Helvetica", 16))
         self.logout.grid(columnspan=2)
         #pack grid
     def _login_btn_clickked(self):
@@ -73,6 +73,7 @@ root.wm_title("Login")
 root.configure(bg="#707070")
 #doesn't work on mac or python 3.5.1
 logo = PhotoImage(master = root,file="APC-logo.gif")
-w1 = Label(root, image=logo).grid(row=0,column=0)
+loginlg = logo.subsample(2,2)
+w1 = Label(root, image=loginlg).grid(row=0,column=0)
 lf = Login(root)
 root.mainloop()

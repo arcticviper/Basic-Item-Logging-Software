@@ -22,7 +22,7 @@ def main():
   logo = tk.PhotoImage(file="APC-logo.gif")
   lg = tk.Label(image=logo)
   lg.image = logo
-  lg.pack()
+  #lg.pack()
   root2.after(4998, login)
   root2.mainloop()
 

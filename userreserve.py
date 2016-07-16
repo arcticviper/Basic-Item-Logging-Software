@@ -41,7 +41,7 @@ class Borrow(Frame): #create returnframe
         self.entryitemname.grid(row=3, column=1)
         self.logbtn = Button(self, text="Search", command = self._search_btn_clickked,bg="#B3B3B3")
         self.logbtn.grid(row=1, column=2)
-        self.logbtn = Button(self, text="Reserve", command = self._borrow_btn_clickked,bg="#B3B3B3")
+        self.logbtn = Button(self, text="Reserve", command = self._reserve_btn_clickked,bg="#B3B3B3")
         self.logbtn.grid(row=2, column=2)
         self.logout = Button(self, text="Exit", command = userpanel,bg="#B3B3B3")
         self.logout.grid(row=3, column=2)
@@ -65,7 +65,7 @@ class Borrow(Frame): #create returnframe
         else:
                 tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
                 conn.commit()
-    def _borrow_btn_clickked(self):
+    def _reserve_btn_clickked(self):
         c.execute('SELECT Email FROM userlog ORDER BY Email DESC LIMIT 1')
         Email1 = c.fetchone()
         Email = Email1[0] #removes brackets
@@ -94,8 +94,7 @@ class Borrow(Frame): #create returnframe
                         print (retchk) #debugging
                         if retchk != Email:
                             self.entryitemname.insert(END, result)
-                            tm.showinfo("Borrow complete", "Thank you for borrowing this item.")
-                            c.execute("INSERT INTO itemlog(Email, datestamp, ItemName, serial,borrowing) VALUES(?,?,?,?,?)",(Email,date,str(result),serialno,True))
+                            tm.showinfo("Borrow complete", "Thank you for reserving this item.")
                             c.execute('UPDATE items SET Borrower = "%s",Booker = null WHERE serial="%s" and barcode="%s"' % (Email,serialno,barcodeno))
                             conn.commit()
                         else:
