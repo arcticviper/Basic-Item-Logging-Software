@@ -16,6 +16,9 @@ def userpanel():
 def usermod():
         root.destroy()
         runpy.run_path('adminmoduser.py')
+def useradd():
+        root.destroy()
+        runpy.run_path('adminadduser.py')
 
 class Application(Frame):
     def __init__(self,master):
@@ -31,7 +34,7 @@ class Application(Frame):
         #self.bttn2["command"] = #open item modify
         self.bttn2.grid(row=2,column=0)
         self.bttn3 = Button(root,text="User Add",width=77,bg="#B3B3B3")
-        #self.bttn3["command"] = #open User Add
+        self.bttn3["command"] = useradd
         self.bttn3.grid(row=3,column=0)
         self.bttn4 = Button(root,text="User Modify",width=77,bg="#B3B3B3")
         self.bttn4["command"] = usermod

@@ -56,7 +56,7 @@ class Borrow(Frame): #create returnframe
         user = self.entryuser.get()
         pwrd = self.entrypass.get()
         privget = self.entrypriv.get()
-        IDGEN = int(0)
+        IDGEN = int(0) #make an ID generator
         unat = int(0)
         try:
             priv = int(privget)
