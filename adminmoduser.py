@@ -1,7 +1,7 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
 # Version 0.1
 # Created by Charles Denison
-# Item reserver
+# User Modify
 from tkinter import *
 import tkinter.messagebox as tm
 import sqlite3
@@ -94,8 +94,8 @@ class Borrow(Frame): #create returnframe
             conn.commit()
         print(tempid)
         if tempid is not None: #check if user exists
-            if user is not None:
-                if pwrd is not None:
+            if user is not "":
+                if pwrd is not "":
                     if priv == 1 or priv == 0:
                         if unat >= 0:
                             tm.showinfo("Update complete", "The details have been updated.")
