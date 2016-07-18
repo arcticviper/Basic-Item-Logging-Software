@@ -22,6 +22,9 @@ def useradd():
 def userlog():
         root.destroy()
         runpy.run_path('adminloguser.py')
+def itemlog():
+        root.destroy()
+        runpy.run_path('adminloguser.py')
 
 class Application(Frame):
     def __init__(self,master):
@@ -49,7 +52,7 @@ class Application(Frame):
         self.bttn6["command"] = userlog
         self.bttn6.grid(row=6,column=0)
         self.bttn7 = Button(root,text="Item Logging",width=77,bg="#B3B3B3")
-        #self.bttn7["command"] = #open item logging
+        self.bttn7["command"] = itemlog
         self.bttn7.grid(row=7,column=0)
         self.bttn8 = Button(root,text="Logout",width=77,bg="#B3B3B3")
         self.bttn8["command"] = logout
