@@ -23,14 +23,15 @@ def userpanel():
     root.destroy()
     runpy.run_path('userpanel.py')
 class Login(Frame): #create loginframe
+    attempt = 0
     def __init__(self, master):
         super().__init__(master)#inherit base class
         self.grid()
         self.create_widget()
     def create_widget(self):
         #init labels
-        self.labelusr = Label(self, text="Username",font=("Helvetica", 17))
-        self.labelpw = Label(self, text="Password",font=("Helvetica", 17))
+        self.labelusr = Label(self, text="Username")
+        self.labelpw = Label(self, text="Password")
         #init entry
         self.entryusr = Entry(self)
         self.entrypw = Entry(self, show="*")
@@ -39,15 +40,14 @@ class Login(Frame): #create loginframe
         self.labelpw.grid(row=2, sticky=E)
         self.entryusr.grid(row=1, column=1)
         self.entrypw.grid(row=2, column=1)
-        self.logbtn = Button(self, text="Login", command = self._login_btn_clickked,bg="#B3B3B3",fg='green',font=("Helvetica", 16))
+        self.logbtn = Button(self, text="Login", command = self._login_btn_clickked,bg="#B3B3B3",fg='green',height=2)
         self.logbtn.grid(row=1, column=2, rowspan=2)
-        self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3",fg='red',font=("Helvetica", 16))
+        self.logout = Button(self, text="Exit", command = quit,bg="#B3B3B3",fg='red',width=5)
         self.logout.grid(columnspan=2)
         #pack grid
     def _login_btn_clickked(self):
         user = self.entryusr.get()
         password = self.entrypw.get()
-        attempt = 1
         #read from users table and ensures that user and password matches with information on database
         #when using different tables ensure that Email  and password matches the table selected (users) and only selecting users who have under 3 incorrect attempts
         c.execute('SELECT * from users WHERE Email="%s" AND password="%s" AND unattempt<3' % (user, password))
@@ -63,9 +63,9 @@ class Login(Frame): #create loginframe
             else:
                 userpanel()
         else:
-            attempt=attempt+1
+            Login.attempt=Login.attempt+1
             tm.showerror("Login error", "Login failed, please ensure you have typed your details correctly. Otherwise please contact the system adminstrator")
-            c.execute("INSERT INTO userlog(Attempt, Email, datestamp, sucessful)VALUES(?,?,?,?)",(attempt,user,date,False))
+            c.execute("INSERT INTO userlog(Attempt, Email, datestamp, sucessful)VALUES(?,?,?,?)",(Login.attempt,user,date,False))
             c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
             conn.commit()
 root = Tk()
@@ -76,4 +76,5 @@ logo = PhotoImage(master = root,file="APC-logo.gif")
 loginlg = logo.subsample(2,2)
 w1 = Label(root, image=loginlg).grid(row=0,column=0)
 lf = Login(root)
+attempt = 0
 root.mainloop()

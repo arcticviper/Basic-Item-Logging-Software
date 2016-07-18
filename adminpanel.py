@@ -19,6 +19,9 @@ def usermod():
 def useradd():
         root.destroy()
         runpy.run_path('adminadduser.py')
+def userlog():
+        root.destroy()
+        runpy.run_path('adminloguser.py')
 
 class Application(Frame):
     def __init__(self,master):
@@ -43,7 +46,7 @@ class Application(Frame):
         self.bttn5["command"] = userpanel
         self.bttn5.grid(row=5,column=0)
         self.bttn6 = Button(root,text="User Logging",width=77,bg="#B3B3B3")
-        #self.bttn6["command"] = #open User Logging
+        self.bttn6["command"] = userlog
         self.bttn6.grid(row=6,column=0)
         self.bttn7 = Button(root,text="Item Logging",width=77,bg="#B3B3B3")
         #self.bttn7["command"] = #open item logging
