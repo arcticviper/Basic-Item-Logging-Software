@@ -24,7 +24,7 @@ def userlog():
         runpy.run_path('adminloguser.py')
 def itemlog():
         root.destroy()
-        runpy.run_path('adminloguser.py')
+        runpy.run_path('adminlogitem.py')
 
 class Application(Frame):
     def __init__(self,master):
