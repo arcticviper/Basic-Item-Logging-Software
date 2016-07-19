@@ -25,6 +25,9 @@ def userlog():
 def itemlog():
         root.destroy()
         runpy.run_path('adminlogitem.py')
+def additem():
+        root.destroy()
+        runpy.run_path('adminitemadd.py')
 
 class Application(Frame):
     def __init__(self,master):
@@ -34,7 +37,7 @@ class Application(Frame):
         
     def create_widget(self,):
         self.bttn1 = Button(root,text="Item Add",width=77,bg="#B3B3B3")
-        #self.bttn1["command"] = #open item add
+        self.bttn1["command"] = additem
         self.bttn1.grid(row=1,column=0)
         self.bttn2 = Button(root,text="Item Modify",width=77,bg="#B3B3B3")
         #self.bttn2["command"] = #open item modify
