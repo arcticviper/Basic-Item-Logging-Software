@@ -17,7 +17,7 @@ def adminpanel():
         root.destroy()
         runpy.run_path('adminpanel.py')
 #user input
-class Borrow(Frame): #create returnframe
+class usermod(Frame): #create returnframe
     def __init__(self, master):
         super().__init__(master)#inherit base class
         self.grid()
@@ -144,5 +144,5 @@ root.wm_title("User Modification")
 root.configure(bg="#707070")
 logo = PhotoImage(master = root,file="APC-logo.gif")
 w1 = Label(root, image=logo).grid(row=0,column=0)
-lf = Borrow(root)
+lf = usermod(root)
 root.mainloop()

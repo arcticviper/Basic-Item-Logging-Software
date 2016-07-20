@@ -28,6 +28,9 @@ def itemlog():
 def additem():
         root.destroy()
         runpy.run_path('adminitemadd.py')
+def moditem():
+        root.destroy()
+        runpy.run_path('adminitemmod.py')
 
 class Application(Frame):
     def __init__(self,master):
@@ -40,7 +43,7 @@ class Application(Frame):
         self.bttn1["command"] = additem
         self.bttn1.grid(row=1,column=0)
         self.bttn2 = Button(root,text="Item Modify",width=77,bg="#B3B3B3")
-        #self.bttn2["command"] = #open item modify
+        self.bttn2["command"] = moditem
         self.bttn2.grid(row=2,column=0)
         self.bttn3 = Button(root,text="User Add",width=77,bg="#B3B3B3")
         self.bttn3["command"] = useradd
