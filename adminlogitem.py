@@ -72,22 +72,30 @@ class Borrow(Frame): #create returnframe
         self.entrybrrw.delete(0, 'end')
         self.entryseri.delete(0, 'end')
         
-        
         searchitem = c.execute('SELECT ItemName FROM itemlog WHERE Email="%s" ORDER BY id DESC' % (user))
         result1=c.fetchone()
         print(result1)
         try: #verify user exists
                 att = result1[0] #removes brackets
+                print(att)
         except:
-                tm.showerror("format error", "Search failed, please ensure you have typed the details correctly.")
+                #tm.showerror("format error", "Search failed, please ensure you have typed the details correctly.")
                 conn.commit()
-        if att is not None: #grab info
+                att = None
+        if att is not None: #grab info using itemname
                 self.entryname.insert(END, att)
                 c.execute('SELECT serial FROM itemlog WHERE Email="%s" ORDER BY id DESC' % (user))
                 getser = c.fetchone()
                 self.entryseri.insert(END, getser)
                 c.execute('SELECT borrowing FROM itemlog WHERE Email="%s" ORDER BY id DESC' % (user))
-                getbrw = c.fetchone()
+                getbrw1 = c.fetchone()
+                getbrw = getbrw1[0]
+                print(getbrw)
+                if getbrw == 1:
+                        getbrw = 'True'
+                else:
+                        getbrw = 'False'
+                print(getbrw)
                 self.entrybrrw.insert(END, getbrw)
                 c.execute('SELECT datestamp FROM itemlog WHERE Email="%s" ORDER BY id DESC' % (user))
                 getdate1 = c.fetchone()
@@ -102,6 +110,43 @@ class Borrow(Frame): #create returnframe
                     self.textfull.insert(END, "\n")
                 tm.showinfo("Search Found", "This user has been found in the database.")
                 conn.commit()
+        elif itemname is not None and serialno is not None:
+                searchname = c.execute('SELECT ItemName FROM itemlog WHERE serial="%s" ORDER BY id DESC' % (serialno))
+                result1=c.fetchone()
+                print(result1)
+                itemname = result1[0] #removes brackets
+                self.entryname.insert(END, itemname)
+                c.execute('SELECT serial FROM itemlog WHERE serial="%s" ORDER BY id DESC' % (serialno))
+                getser = c.fetchone()
+                print(getser)
+                self.entryseri.insert(END, getser)
+                c.execute('SELECT Email FROM itemlog WHERE serial="%s" ORDER BY id DESC' % (serialno))
+                getuser = c.fetchone()
+                self.entryuser.insert(END, getuser)
+                c.execute('SELECT borrowing FROM itemlog WHERE serial="%s" ORDER BY id DESC' % (serialno))
+                getbrw1 = c.fetchone()
+                getbrw = getbrw1[0]
+                print(getbrw)
+                if getbrw == 1:
+                        getbrw = 'True'
+                else:
+                        getbrw = 'False'
+                print(getbrw)
+                self.entrybrrw.insert(END, getbrw)
+                c.execute('SELECT datestamp FROM itemlog WHERE serial="%s" ORDER BY id DESC' % (serialno))
+                getdate1 = c.fetchone()
+                try: #verify user exists
+                    getdate = getdate1[0] #removes brackets
+                except:
+                    tm.showerror("format error", "Search failed, please ensure you have typed the details correctly.")
+                    conn.commit()
+                self.entrydate.insert(END, getdate)
+                for row in c.execute('SELECT * FROM itemlog WHERE serial="%s" ORDER BY id DESC' % (serialno)):
+                    self.textfull.insert(END, row)
+                    self.textfull.insert(END, "\n")
+                tm.showinfo("Search Found", "This user has been found in the database.")
+                conn.commit()
+                
         else:
                 tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly.")
                 conn.commit()

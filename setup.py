@@ -13,20 +13,22 @@ def Main():
                 c = conn.cursor()
 
 #table setup for login and items
-                #create login table email+password, priv stands for privleges
-                c.execute('CREATE TABLE IF NOT EXISTS users(ID KEY, Email TEXT,password TEXT,priv BOOL,unattempt INT)')
+                #create login table priv stands for privleges unattempt stands for 
+                c.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT,password TEXT,priv BOOL,unattempt INT)')
                 #create item table of ID, ItemName, Category, Quanitty, notes, value, total)
-                c.execute('CREATE TABLE IF NOT EXISTS items(serial KEY,barcode INT, ItemName TEXT, Category TEXT, Quantity INT, Notes TEXT, Borrower TEXT, Booker TEXT)')
+                c.execute('CREATE TABLE IF NOT EXISTS items(id INTEGER PRIMARY KEY AUTOINCREMENT, serial KEY,barcode INT, ItemName TEXT, Category TEXT, Quantity INT, Notes TEXT, Borrower TEXT, Booker TEXT)')
                 #create user log time table
-                c.execute('CREATE TABLE IF NOT EXISTS userlog(Attempt KEY, Email TEXT,datestamp TEXT,sucessful BOOL)')
+                c.execute('CREATE TABLE IF NOT EXISTS userlog(id INTEGER PRIMARY KEY AUTOINCREMENT, Attempt KEY, Email TEXT,datestamp TEXT,sucessful BOOL)')
                 #create item log time table
                 c.execute('CREATE TABLE IF NOT EXISTS itemlog(id INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT,datestamp TEXT,ItemName TEXT,serial TEXT,borrowing BOOL)')
+                print('tablecreationdone')
 # inserting test data, add # to start when done testing
-                c.execute("INSERT INTO users VALUES(123, 'admin@albertparkcollege.vic.edu.au', 'APc00000',1,0)")
-                c.execute("INSERT INTO users VALUES(456, 'user@albertparkcollege.vic.edu.au','APc00000',0,0)")
-                c.execute("INSERT INTO items VALUES(456,654, 'GoSlow','Camera',1,null,'admin@albertparkcollege.vic.edu.au',null)")
-                c.execute("INSERT INTO items VALUES(111,222, 'Canon 700E','Camera',1,null,null,'user@albertparkcollege.vic.edu.au')")
-                
+                c.execute("INSERT INTO users(Email,password,priv,unattempt) VALUES('admin@albertparkcollege.vic.edu.au', 'APc00000',1,0)")
+                print('tablecreationdone')
+                c.execute("INSERT INTO users(Email,password,priv,unattempt)  VALUES('user@albertparkcollege.vic.edu.au','APc00000',0,0)")
+                c.execute("INSERT INTO items(serial,barcode,ItemName,Category,Quantity,Notes,Borrower,Booker) VALUES(123,456, 'GoSlow','Camera',1,null,'admin@albertparkcollege.vic.edu.au',null)")
+                c.execute("INSERT INTO items(serial,barcode,ItemName,Category,Quantity,Notes,Borrower,Booker) VALUES(111,222, 'Canon 700E','Camera',1,null,null,'user@albertparkcollege.vic.edu.au')")
+                print('tablecreationdone')
 # grabbing and checking data
                 c.execute("SELECT * FROM users")
                

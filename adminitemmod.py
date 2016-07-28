@@ -75,8 +75,9 @@ class Borrow(Frame): #create returnframe
         # frame complete
         # button functions
     def _search_btn_clickked(self):
-        itemname = self.entryname.get()
-        search = c.execute('SELECT serial FROM items WHERE ItemName="%s"' % (itemname))
+        serial = self.entryseri.get()
+        barcode = self.entrybarc.get()
+        search = c.execute('SELECT id FROM items WHERE serial="%s" and barcode = "%s"' % (serial,barcode))
         self.entryseri.delete(0, 'end')
         self.entrybarc.delete(0, 'end')
         self.entryname.delete(0, 'end')
@@ -86,18 +87,19 @@ class Borrow(Frame): #create returnframe
         self.entrybrrw.delete(0, 'end')
         self.entrybker.delete(0, 'end')
         
-        result1=c.fetchone()
+        IDres1=c.fetchone()
         try: #verify item exists
-                serial = result1[0] #removes brackets
+                idres = IDres1[0] #removes brackets
+                print(idres)
         except:
                 tm.showerror("format error", "Search failed, please ensure you have typed the details correctly.")
                 conn.commit()
         if serial is not None: #grab info
                 self.entryseri.insert(END, serial)
-                c.execute('SELECT barcode FROM items WHERE serial="%s"' % (serial))
+                c.execute('SELECT barcode FROM items WHERE id="%s"' % (idres))
                 getbarc = c.fetchone()
                 self.entrybarc.insert(END, getbarc)
-                c.execute('SELECT ItemName FROM items WHERE serial="%s"' % (serial))
+                c.execute('SELECT ItemName FROM items WHERE id="%s"' % (idres))
                 getname1 = c.fetchone()
                 try: 
                         getname = getname1[0] #removes brackets
@@ -105,24 +107,24 @@ class Borrow(Frame): #create returnframe
                         tm.showerror("format error", "Search failed, please ensure you have typed the details correctly.")
                 conn.commit()
                 self.entryname.insert(END, getname)
-                c.execute('SELECT Category FROM items WHERE serial="%s"' % (serial))
+                c.execute('SELECT Category FROM items WHERE id="%s"' % (idres))
                 getcat = c.fetchone()
                 self.entrycate.insert(END, getcat)
-                c.execute('SELECT Quantity FROM items WHERE serial="%s"' % (serial))
+                c.execute('SELECT Quantity FROM items WHERE id="%s"' % (idres))
                 getquan = c.fetchone()
                 self.entryquan.insert(END, getquan)
-                c.execute('SELECT Notes FROM items WHERE serial="%s"' % (serial))
+                c.execute('SELECT Notes FROM items WHERE id="%s"' % (idres))
                 getnote = c.fetchone()
                 self.entrynote.insert(END, getnote)
-                c.execute('SELECT Borrower FROM items WHERE serial="%s"' % (serial))
+                c.execute('SELECT Borrower FROM items WHERE id="%s"' % (idres))
                 getbrrw = c.fetchone()
                 self.entrybrrw.insert(END, getbrrw)
-                c.execute('SELECT Booker FROM items WHERE serial="%s"' % (serial))
+                c.execute('SELECT Booker FROM items WHERE id="%s"' % (idres))
                 getbker = c.fetchone()
                 self.entrybker.insert(END, getbker)
 
 
-                tm.showinfo("Search Found", "This user has been found in the database.")
+                #tm.showinfo("Search Found", "This item has been found in the database.") - slows down use
                 
                 conn.commit()
         else:
@@ -140,7 +142,7 @@ class Borrow(Frame): #create returnframe
             bker = self.entrybker.get()
             quan = int(quan)
             print (seri,barc,name,cate,quan,note,brrw,bker)#debugging
-            c.execute('SELECT serial FROM items WHERE ItemName="%s"' % (name))
+            search = c.execute('SELECT id FROM items WHERE serial="%s" and barcode = "%s"' % (seri,barc))
             tempid1=c.fetchone()
             print(tempid1)
             tempid = tempid1[0] #removes brackets
@@ -155,7 +157,7 @@ class Borrow(Frame): #create returnframe
                     if cate is not "":
                         if quan > 0:
                             tm.showinfo("Update complete", "The details have been updated.")
-                            c.execute('UPDATE items SET barcode = "%s",ItemName = "%s",Category = "%s",Quantity = "%s",Notes = "%s" WHERE serial="%s"' %(barc,name,cate,quan,note,seri))
+                            c.execute('UPDATE items SET serial="%s",barcode = "%s",ItemName = "%s",Category = "%s",Quantity = "%s",Notes = "%s" WHERE id="%s"' %(seri,barc,name,cate,quan,note,tempid))
                             conn.commit()
                         else:
                             tm.showerror("Incorrect value", "Please insert the quanitity greater than 0.")
@@ -181,7 +183,7 @@ class Borrow(Frame): #create returnframe
         self.entrynote.delete(0, 'end')
         self.entrybrrw.delete(0, 'end')
         self.entrybker.delete(0, 'end')
-        tm.showinfo("Clear input", "Input has been cleared.")
+        #tm.showinfo("Clear input", "Input has been cleared.") - slows down use
         conn.commit()
     def _remove_btn_clickked(self):
         seri = self.entryseri.get()

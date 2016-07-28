@@ -84,7 +84,7 @@ class Borrow(Frame): #create returnframe
                 if name is not "":
                     if cate is not "":
                         if quan > 0:
-                            tm.showinfo("Update complete", "The details have been updated.")
+                            tm.showinfo("Insert complete", "The item/s have been added.")
                             c.execute('INSERT INTO items(serial,barcode,ItemName,Category,Quantity,Notes)VALUES(?,?,?,?,?,?)' ,(seri,barc,name,cate,quan,note))
                             conn.commit()
                         else:

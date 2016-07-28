@@ -47,13 +47,13 @@ class Borrow(Frame): #create returnframe
         self.entryunat.grid(row=4, column=1)
         self.textfull.grid(row=6, column=0,columnspan=3,rowspan=4)
         self.textfull.grid_columnconfigure(1, weight=1)
-        self.srcbtn = Button(self, text="Latest Login", command = self._search_btn_clickked,bg="#B3B3B3",width = 10)
+        self.srcbtn = Button(self, text="Latest User Login", command = self._search_btn_clickked,bg="#B3B3B3",width = 15)
         self.srcbtn.grid(row=1, column=2)
-        self.srcbtn = Button(self, text="Full Search", command = self._fullsearch_btn_clickked,bg="#B3B3B3",width = 10)
+        self.srcbtn = Button(self, text="Full User Search", command = self._fullsearch_btn_clickked,bg="#B3B3B3",width = 15)
         self.srcbtn.grid(row=2, column=2)
-        self.modbtn = Button(self, text="Clear", command = self._clear_btn_clickked,bg="#B3B3B3",width = 10)
+        self.modbtn = Button(self, text="Clear", command = self._clear_btn_clickked,bg="#B3B3B3",width = 15)
         self.modbtn.grid(row=3, column=2)
-        self.logout = Button(self, text="Exit", command = adminpanel,bg="#B3B3B3",width = 10)
+        self.logout = Button(self, text="Exit", command = adminpanel,bg="#B3B3B3",width = 15)
         self.logout.grid(row=4, column=2)
         # frame complete
         # button functions
@@ -65,13 +65,15 @@ class Borrow(Frame): #create returnframe
         self.entryincr.delete(0, 'end')
         self.entrydate.delete(0, 'end')
         self.entryunat.delete(0, 'end')
+        self.textfull.delete(0.0, 'end')
         searchatt = c.execute('SELECT Attempt FROM userlog WHERE Email="%s"' % (user))
         result1=c.fetchone()
         print(result1)
+        att = None
         try: #verify user exists
                 att = result1[0] #removes brackets
         except:
-                tm.showerror("format error", "Search failed, please ensure you have typed the details correctly.")
+                tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly.")
                 conn.commit()
         if att is not None: #grab info
                 self.entryincr.insert(END, att)
@@ -92,7 +94,7 @@ class Borrow(Frame): #create returnframe
                 tm.showinfo("Search Found", "This user has been found in the database.")
                 conn.commit()
         else:
-                tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly.")
+                #tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly.")
                 conn.commit()
     def _search_btn_clickked(self):
         user = self.entryuser.get()
@@ -134,6 +136,7 @@ class Borrow(Frame): #create returnframe
         self.entrydate.delete(0, 'end')
         self.entryunat.delete(0, 'end')
         self.entrydate.delete(0, 'end')
+        self.textfull.delete(0, 'end')
         tm.showinfo("Clear input", "Input has been cleared.")
         conn.commit()
         
