@@ -24,11 +24,11 @@ def Main():
                 c.execute('CREATE TABLE IF NOT EXISTS itemlog(id INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT,datestamp TEXT,ItemName TEXT,serial TEXT,borrowing BOOL)')
                 print('tablecreationdone')
 # inserting test data, add # to start when done testing
-                c.execute("INSERT INTO users(Email,password,priv,unattempt) VALUES('admin@albertparkcollege.vic.edu.au', 'APc00000',1,0)")
+                #c.execute("INSERT INTO users(Email,password,priv,unattempt) VALUES('admin@albertparkcollege.vic.edu.au', 'APc00000',1,0)")
                 print('tablecreationdone')
-                c.execute("INSERT INTO users(Email,password,priv,unattempt)  VALUES('user@albertparkcollege.vic.edu.au','APc00000',0,0)")
-                c.execute("INSERT INTO items(serial,barcode,ItemName,Category,Quantity,Notes,Borrower,Booker) VALUES(123,456, 'GoSlow','Camera',1,null,'admin@albertparkcollege.vic.edu.au',null)")
-                c.execute("INSERT INTO items(serial,barcode,ItemName,Category,Quantity,Notes,Borrower,Booker) VALUES(111,222, 'Canon 700E','Camera',1,null,null,'user@albertparkcollege.vic.edu.au')")
+                #c.execute("INSERT INTO users(Email,password,priv,unattempt)  VALUES('user@albertparkcollege.vic.edu.au','APc00000',0,0)")
+                #c.execute("INSERT INTO items(serial,barcode,ItemName,Category,Quantity,Notes,Borrower,Booker) VALUES(123,456, 'GoSlow','Camera',1,null,'admin@albertparkcollege.vic.edu.au',null)")
+                #c.execute("INSERT INTO items(serial,barcode,ItemName,Category,Quantity,Notes,Borrower,Booker) VALUES(111,222, 'Canon 700E','Camera',1,null,null,'user@albertparkcollege.vic.edu.au')")
                 print('tablecreationdone')
 # grabbing and checking data
                 c.execute("SELECT * FROM users")
