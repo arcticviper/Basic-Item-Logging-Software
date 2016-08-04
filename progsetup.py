@@ -4,6 +4,7 @@
 # Setup
 # Potentially try or give option to use sqlite or MYSQL in future iterations
 import sqlite3
+import runpy
 #define main setup
 def Main():
         try:
@@ -46,6 +47,7 @@ def Main():
                 if conn:
                         conn.commit()
                         conn.close()
+                        runpy.run_path('loading.py')
 # execute 
 if __name__ == '__main__':
 	Main()

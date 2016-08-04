@@ -136,7 +136,7 @@ class Borrow(Frame): #create returnframe
         self.entrydate.delete(0, 'end')
         self.entryunat.delete(0, 'end')
         self.entrydate.delete(0, 'end')
-        self.textfull.delete(0, 'end')
+        self.textfull.delete(1.0, 'end')
         tm.showinfo("Clear input", "Input has been cleared.")
         conn.commit()
         
