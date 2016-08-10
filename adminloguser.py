@@ -23,6 +23,8 @@ class Borrow(Frame): #create returnframe
         self.grid()
         self.create_widget()
     def create_widget(self):
+        #init scrollbar
+        self.vsb = Scrollbar(orient="vertical", command=self.OnVsb)
         #init labels
         self.labelincr = Label(self, text="Incorrect attempts")
         self.labeluser = Label(self, text="Username")
@@ -40,11 +42,11 @@ class Borrow(Frame): #create returnframe
         self.entryuser = Entry(self)
         self.entrydate = Entry(self)
         self.entryunat = Entry(self)
-        self.textlgid = Text(self, height = 6, width = 7) #id
-        self.textincr = Text(self, height = 6, width = 7) #inc att
-        self.textuser = Text(self, height = 6, width = 20)#usr
-        self.textdate = Text(self, height = 6, width = 20)#date
-        self.textatmp = Text(self, height = 6, width = 7)#successful
+        self.textlgid = Listbox(self, height = 6, width = 7,yscrollcommand=self.vsb.set) #id
+        self.textincr = Listbox(self, height = 6, width = 7,yscrollcommand=self.vsb.set) #inc att
+        self.textuser = Listbox(self, height = 6, width = 45,yscrollcommand=self.vsb.set)#usr
+        self.textdate = Listbox(self, height = 6, width = 20,yscrollcommand=self.vsb.set)#date
+        self.textatmp = Listbox(self, height = 6, width = 7,yscrollcommand=self.vsb.set)#successful
 
         #grid sorting
         self.labelincr.grid(row=1, column=1)
@@ -66,7 +68,12 @@ class Borrow(Frame): #create returnframe
         self.textuser.grid(row=7, column=2,padx=5)
         self.textdate.grid(row=7, column=3,padx=5)
         self.textatmp.grid(row=7, column=4,padx=5)
-        
+        self.textlgid.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textincr.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textuser.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textdate.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textatmp.bind("<MouseWheel>", self.OnMouseWheel)
+        # button functions
         self.srcbtn = Button(self, text="Latest User Login", command = self._search_btn_clickked,bg="#B3B3B3",width = 15)
         self.srcbtn.grid(row=1, column=3)
         self.srcbtn = Button(self, text="Full User Search", command = self._fullsearch_btn_clickked,bg="#B3B3B3",width = 15)
@@ -76,7 +83,19 @@ class Borrow(Frame): #create returnframe
         self.logout = Button(self, text="Exit", command = adminpanel,bg="#B3B3B3",width = 15)
         self.logout.grid(row=4, column=3)
         # frame complete
-        # button functions
+    def OnVsb(self, *args):
+        self.textlgid.yview(*args)
+        self.textincr.yview(*args)
+        self.textuser.yview(*args)
+        self.textdate.yview(*args)
+        self.textatmp.yview(*args)
+    def OnMouseWheel(self, event):
+        self.textlgid.yview("scroll",event.delta,"units")
+        self.textincr.yview("scroll",event.delta,"units")
+        self.textuser.yview("scroll",event.delta,"units")
+        self.textdate.yview("scroll",event.delta,"units")
+        self.textatmp.yview("scroll",event.delta,"units")
+        return "break"
     def _fullsearch_btn_clickked(self):
         user = self.entryuser.get()
         incatt = self.entryincr.get()
@@ -85,7 +104,7 @@ class Borrow(Frame): #create returnframe
         self.entryincr.delete(0, 'end')
         self.entrydate.delete(0, 'end')
         self.entryunat.delete(0, 'end')
-        self.textlgid.delete(0.0, 'end')
+        #self.textlgid.delete(0.0, 'end')
         searchatt = c.execute('SELECT Attempt FROM userlog WHERE Email="%s"' % (user))
         result1=c.fetchone()
         print(result1)
@@ -117,15 +136,10 @@ class Borrow(Frame): #create returnframe
                         else:
                                 sucess = "No"
                         self.textlgid.insert(END, logid)
-                        self.textlgid.insert(END, "\n")
                         self.textincr.insert(END, incat)
-                        self.textincr.insert(END, "\n")
                         self.textuser.insert(END, email)
-                        self.textuser.insert(END, "\n")
                         self.textdate.insert(END, dates)
-                        self.textdate.insert(END, "\n")
                         self.textatmp.insert(END, sucess)
-                        self.textatmp.insert(END, "\n")
                         
                 tm.showinfo("Search Found", "This user has been found in the database.")
                 conn.commit()

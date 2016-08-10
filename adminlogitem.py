@@ -23,6 +23,8 @@ class Borrow(Frame): #create returnframe
         self.grid()
         self.create_widget()
     def create_widget(self):
+        #init scrollbar
+        self.vsb = Scrollbar(orient="vertical", command=self.OnVsb)
         #init labels
         self.labeluser = Label(self, text="Username")
         self.labeldate = Label(self, text="Date Stamp")
@@ -43,12 +45,12 @@ class Borrow(Frame): #create returnframe
         self.entryname = Entry(self)
         self.entryseri = Entry(self)
         self.entrybrrw = Entry(self)
-        self.textitid = Text(self, height = 6, width = 7) #id
-        self.textuser = Text(self, height = 6, width = 20) #user
-        self.textdate = Text(self, height = 6, width = 20) #date
-        self.textname = Text(self, height = 6, width = 20)#name
-        self.textseri = Text(self, height = 6, width = 20)#serial no
-        self.textbrrw = Text(self, height = 6, width = 7) #successful
+        self.textitid = Listbox(self, height = 6, width = 7,yscrollcommand=self.vsb.set) #id
+        self.textuser = Listbox(self, height = 6, width = 20,yscrollcommand=self.vsb.set) #user
+        self.textdate = Listbox(self, height = 6, width = 20,yscrollcommand=self.vsb.set) #date
+        self.textname = Listbox(self, height = 6, width = 20,yscrollcommand=self.vsb.set)#name
+        self.textseri = Listbox(self, height = 6, width = 20,yscrollcommand=self.vsb.set)#serial no
+        self.textbrrw = Listbox(self, height = 6, width = 7,yscrollcommand=self.vsb.set) #successful
         #grid sorting
         self.labeluser.grid(row=1, column=1)
         self.labeldate.grid(row=2, column=1)
@@ -73,6 +75,13 @@ class Borrow(Frame): #create returnframe
         self.textname.grid(row=8, column=3,padx=5)
         self.textseri.grid(row=8, column=4,padx=5)
         self.textbrrw.grid(row=8, column=5,padx=5)
+        self.textitid.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textuser.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textdate.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textname.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textseri.bind("<MouseWheel>", self.OnMouseWheel)
+        self.textbrrw.bind("<MouseWheel>", self.OnMouseWheel)
+        # button functions
         self.srcbtn = Button(self, text="Latest Event", command = self._search_btn_clickked,bg="#B3B3B3",width = 10)
         self.srcbtn.grid(row=1, column=3)
         self.srcbtn = Button(self, text="Full Search", command = self._fullsearch_btn_clickked,bg="#B3B3B3",width = 10)
@@ -82,7 +91,19 @@ class Borrow(Frame): #create returnframe
         self.logout = Button(self, text="Exit", command = adminpanel,bg="#B3B3B3",width = 10)
         self.logout.grid(row=4, column=3)
         # frame complete
-        # button functions
+    def OnVsb(self, *args):
+        self.textlgid.yview(*args)
+        self.textincr.yview(*args)
+        self.textuser.yview(*args)
+        self.textdate.yview(*args)
+        self.textatmp.yview(*args)
+    def OnMouseWheel(self, event):
+        self.textlgid.yview("scroll",event.delta,"units")
+        self.textincr.yview("scroll",event.delta,"units")
+        self.textuser.yview("scroll",event.delta,"units")
+        self.textdate.yview("scroll",event.delta,"units")
+        self.textatmp.yview("scroll",event.delta,"units")
+        return "break"
     def _fullsearch_btn_clickked(self):
         user = self.entryuser.get()
         brrw = self.entrybrrw.get()

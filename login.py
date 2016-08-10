@@ -23,7 +23,6 @@ def userpanel():
     root.destroy()
     runpy.run_path('userpanel.py')
 class Login(Frame): #create loginframe
-    attempt = 0
     def __init__(self, master):
         super().__init__(master)#inherit base class
         self.grid()
@@ -46,6 +45,7 @@ class Login(Frame): #create loginframe
         self.logout.grid(columnspan=2)
         #pack grid
     def _login_btn_clickked(self):
+        attempt = 0
         user = self.entryusr.get()
         password = self.entrypw.get()
         #read from users table and ensures that user and password matches with information on database
@@ -63,7 +63,7 @@ class Login(Frame): #create loginframe
             else:
                 userpanel()
         else:
-            Login.attempt=Login.attempt+1
+            attempt=attempt+1
             tm.showerror("Login error", "Login failed, please ensure you have typed your details correctly. Otherwise please contact the system adminstrator")
             c.execute("INSERT INTO userlog(Attempt, Email, datestamp, sucessful)VALUES(?,?,?,?)",(Login.attempt,user,date,False))
             c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
