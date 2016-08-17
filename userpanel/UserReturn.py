@@ -1,7 +1,8 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
-# Version 0.1
+# Created: 14/07
+# Modified: 17/08
 # Created by Charles Denison
-# Item reserver
+# User RETURN
 from tkinter import *
 import tkinter.messagebox as tm
 import sqlite3
@@ -16,9 +17,9 @@ id
 def userpanel():
         conn.close()
         root.destroy()
-        runpy.run_path('userpanel.py')
+        runpy.run_path('userpanel/UserPanel.py')
 #user input
-class Borrow(Frame): #create returnframe
+class Return(Frame): #create returnframe
     def __init__(self, master):
         super().__init__(master)#inherit base class
         self.grid()
@@ -41,23 +42,18 @@ class Borrow(Frame): #create returnframe
         self.entryitemname.grid(row=3, column=1)
         self.logbtn = Button(self, text="Search", command = self._search_btn_clickked,bg="#B3B3B3")
         self.logbtn.grid(row=1, column=2)
-        self.logbtn = Button(self, text="Reserve", command = self._reserve_btn_clickked,bg="#B3B3B3")
+        self.logbtn = Button(self, text="Return", command = self._return_btn_clickked,bg="#B3B3B3")
         self.logbtn.grid(row=2, column=2)
         self.logout = Button(self, text="Exit", command = userpanel,bg="#B3B3B3")
         self.logout.grid(row=3, column=2)
-        # frame complete
-        # button functions
+        #pack grid
     def _search_btn_clickked(self):
         serialno = self.entryserial.get()
         barcodeno = self.entrybarcode.get()
         search = c.execute('SELECT ItemName FROM items WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
         self.entryitemname.delete(0, 'end')
         result1=c.fetchone()
-        try:
-                result = result1[0] #removes brackets
-        except:
-                tm.showerror("Borrow error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
-                conn.commit()
+        result = result1[0] #removes brackets as sometimes may return as tuples
         if result is not None:
                 self.entryitemname.insert(END, result)
                 tm.showinfo("Search Found", "This item has been found in the database.")
@@ -65,7 +61,7 @@ class Borrow(Frame): #create returnframe
         else:
                 tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
                 conn.commit()
-    def _reserve_btn_clickked(self):
+    def _return_btn_clickked(self):
         c.execute('SELECT Email FROM userlog ORDER BY Email DESC LIMIT 1')
         Email1 = c.fetchone()
         Email = Email1[0] #removes brackets
@@ -79,39 +75,31 @@ class Borrow(Frame): #create returnframe
         try:
                 result = result1[0] #removes brackets
         except:
-                tm.showerror("Borrow error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
+                tm.showerror("Return error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
                 conn.commit()
-        if result is not None: #check if item exists
+        print (result)
+        if result is not None:
                 c.execute('SELECT Borrower FROM items WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
-                retchk1 = c.fetchone()
-                print (retchk1) #debugging, remove in final code
-                retchk = retchk1[0]
-                print (retchk) #debugging, remove in final code
-                if retchk != Email: #check if user hasn't accidentally hit reserve instead of return
-                        c.execute('SELECT Booker FROM items WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
-                        reschk1 = c.fetchone()
-                        print (reschk1) #debugging, remove in final code
-                        reschk = reschk1[0]
-                        print (reschk) #debugging, remove in final code
-                        if reschk is None:# check if item already is reserved
-                            self.entryitemname.insert(END, result)
-                            tm.showinfo("Borrow complete", "Thank you for reserving this item.")
-                            c.execute('UPDATE items SET Booker = "%s" WHERE serial="%s" and barcode="%s"' % (Email,serialno,barcodeno))
-                            conn.commit()
-                        else:
-                            tm.showerror("Already reserved", "This item has already been reserved.")
-                            conn.commit()
+                borchk1 = c.fetchone()
+                print (borchk1) #debugging
+                borchk = borchk1[0]
+                print (borchk) #debugging
+                if borchk != None: #prevent people from accidentally returning when item has not been borrowed
+                        tm.showinfo("Return complete", "Thank you for returning this item.")
+                        self.entryitemname.insert(END, result)
+                        c.execute("INSERT INTO itemlog(Email, datestamp, ItemName, serial,borrowing) VALUES(?,?,?,?,?)",(str(Email),date,str(result),serialno,False))
+                        c.execute('UPDATE items SET Borrower = NULL WHERE serial="%s" and barcode="%s"' % (serialno,barcodeno))
+                        conn.commit()
                 else:
-                        tm.showerror("Wrong button?", "Did you mean to click on the return item? Please contact the system admininstrator if this is not the case.")
+                        tm.showerror("Wrong button?", "Did you mean to click on the borrow item? Please contact the system admininstrator if this is not the case.")
                         conn.commit()
         else:
-                tm.showerror("Borrow error2", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
+                tm.showerror("Search error", "Search failed, please ensure you have typed the details correctly. Otherwise please contact the system adminstrator.")
                 conn.commit()
-#execute functions
 root = Tk()
-root.wm_title("User Reserve")
+root.wm_title("User Retrun")
 root.configure(bg="#707070")
 logo = PhotoImage(master = root,file="APC-logo.gif")
 w1 = Label(root, image=logo).grid(row=0,column=0)
-lf = Borrow(root)
+lf = Return(root)
 root.mainloop()

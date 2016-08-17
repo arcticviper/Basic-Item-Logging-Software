@@ -1,5 +1,6 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
-# Version 0.1
+# Created: 29/06
+# Modified: 17/08
 # Created by Charles Denison
 # LOGIN
 from tkinter import *
@@ -17,11 +18,11 @@ date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
 def admin():
     conn.close()
     root.destroy()
-    runpy.run_path('adminpanel.py')
+    runpy.run_path('adminpanel/AdminPanel.py')
 def userpanel():
     conn.close()
     root.destroy()
-    runpy.run_path('userpanel.py')
+    runpy.run_path('userpanel/UserPanel.py')
 class Login(Frame): #create loginframe
     def __init__(self, master):
         super().__init__(master)#inherit base class
@@ -65,13 +66,13 @@ class Login(Frame): #create loginframe
         else:
             attempt=attempt+1
             tm.showerror("Login error", "Login failed, please ensure you have typed your details correctly. Otherwise please contact the system adminstrator")
-            c.execute("INSERT INTO userlog(Attempt, Email, datestamp, sucessful)VALUES(?,?,?,?)",(Login.attempt,user,date,False))
+            c.execute("INSERT INTO userlog(Attempt, Email, datestamp, sucessful)VALUES(?,?,?,?)",(attempt,user,date,False))
             c.execute('UPDATE users SET unattempt = unattempt+1 WHERE Email= ?',(user,))
             conn.commit()
 root = Tk()
 root.wm_title("Login")
 root.configure(bg="#707070")
-#doesn't work on mac or python 3.5.1
+#doesn't work on mac
 logo = PhotoImage(master = root,file="APC-logo.gif")
 loginlg = logo.subsample(2,2)
 w1 = Label(root, image=loginlg).grid(row=0,column=0)

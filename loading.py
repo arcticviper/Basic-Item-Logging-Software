@@ -1,5 +1,6 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
-# Version 0.1
+# Created: 14/07
+# Modified: 17/08
 # Created by Charles Denison
 # Loading Screen
 from tkinter import *

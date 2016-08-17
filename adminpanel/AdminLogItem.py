@@ -1,5 +1,6 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
-# Version 0.1
+# Created: 19/07
+# Modified: 17/08
 # Created by Charles Denison
 # User Log
 from tkinter import *
@@ -15,7 +16,7 @@ date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
 def adminpanel():
         conn.close()
         root.destroy()
-        runpy.run_path('adminpanel.py')
+        runpy.run_path('adminpanel/AdminPanel.py')
 #user input
 class Borrow(Frame): #create returnframe
     def __init__(self, master):
@@ -155,18 +156,12 @@ class Borrow(Frame): #create returnframe
                                 borrowing = 'True'
                         else:
                                 borrowing = 'False'
-                        self.textitid.insert(END, itemid)
-                        self.textitid.insert(END, "\n")
+                        self.textitid.insert(END, itemid)                       
                         self.textuser.insert(END, email)
-                        self.textuser.insert(END, "\n")
                         self.textdate.insert(END, dates)
-                        self.textdate.insert(END, "\n")
                         self.textname.insert(END, name)
-                        self.textname.insert(END, "\n")
                         self.textseri.insert(END, serial)
-                        self.textseri.insert(END, "\n")
                         self.textbrrw.insert(END, borrowing)
-                        self.textbrrw.insert(END, "\n")
                 tm.showinfo("Search Found", "This user has been found in the database.")
                 conn.commit()
         elif itemname is not None and serialno is not None:

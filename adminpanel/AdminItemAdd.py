@@ -1,5 +1,6 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
-# Version 0.1
+# Created: 19/07
+# Modified: 17/08
 # Created by Charles Denison
 # Item Creation
 from tkinter import *
@@ -15,7 +16,7 @@ date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
 def adminpanel():
         conn.close()
         root.destroy()
-        runpy.run_path('adminpanel.py')
+        runpy.run_path('adminpanel/AdminPanel.py')
 #user input
 class Borrow(Frame): #create returnframe
     def __init__(self, master):

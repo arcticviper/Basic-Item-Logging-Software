@@ -1,5 +1,6 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
-# Version 0.1
+# Created: 29/06
+# Modified: 17/08
 # Created by Charles Denison
 # Setup
 # Potentially try or give option to use sqlite or MYSQL in future iterations

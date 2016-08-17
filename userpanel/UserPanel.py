@@ -1,5 +1,6 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
-# Version 0.1
+# Created: 9/07
+# Modified: 17/08
 # Created by Charles Denison
 # User PANEL
 from tkinter import *
@@ -9,16 +10,16 @@ import runpy
 
 def logout():
         root.destroy()
-        runpy.run_path('login.py')
+        runpy.run_path('Login.py')
 def userreturn():
         root.destroy()
-        runpy.run_path('userreturn.py')
+        runpy.run_path('userpanel/UserReturn.py')
 def withdraw():
         root.destroy()
-        runpy.run_path('userborrow.py')
+        runpy.run_path('userpanel/UserBorrow.py')
 def reserve():
         root.destroy()
-        runpy.run_path('userreserve.py')
+        runpy.run_path('userpanel/UserReserve.py')
 
 class Application(Frame):
     def __init__(self,master):
