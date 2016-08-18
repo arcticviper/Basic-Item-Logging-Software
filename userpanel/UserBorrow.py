@@ -1,6 +1,6 @@
 # BILS - BASIC ITEM LOGGING SOFTWARE
 # Created: 14/07
-# Modified: 17/08
+# Modified: 18/08
 # Created by Charles Denison
 # User Borrow
 from tkinter import *
@@ -18,7 +18,8 @@ def userpanel():
         conn.close()
         root.destroy()
         runpy.run_path('userpanel/UserPanel.py')
-#user inputclass Borrow(Frame): #create returnframe
+#user input
+class Borrow(Frame): #create returnframe
     def __init__(self, master):
         super().__init__(master)#inherit base class
         self.grid()
